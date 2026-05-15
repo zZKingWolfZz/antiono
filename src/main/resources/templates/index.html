@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Peso</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            padding: 40px;
+        }
+
+        .opcion-titulo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .radio-group {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .peso-titulo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            height: 60px;
+            font-size: 1.5rem;
+            border: 1px solid #767676;
+            padding-left: 10px;
+        }
+
+        button {
+            height: 64px;
+            font-size: 1.2rem;
+            padding: 0 20px;
+            cursor: pointer;
+            background-color: #efefef;
+            border: 1px solid #767676;
+        }
+
+        .spin-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            z-index: 9999;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="opcion-titulo">¡Selecciona una opción!</div>
+
+    <div class="radio-group">
+        <input type="radio" name="genero" id="m"> <label for="m">Masculino</label>
+        <input type="radio" name="genero" id="f"> <label for="f">Femenino</label>
+    </div>
+
+    <div class="peso-titulo">Ingresa tu peso (kg)</div>
+
+    <div style="display: flex; align-items: flex-start;">
+        <input type="text" id="pesoInput">
+        <button id="btnCalcular">Calcular</button>
+    </div>
+
+    <audio id="musicaTroll" loop>
+        <source src="/audio/musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <img id="imagenGiratoria" src="/img/imagenante.png" class="spin-image" alt="Sorpresa" style="display: none;">
+
+    <script>
+        const boton = document.getElementById('btnCalcular');
+        const audio = document.getElementById('musicaTroll');
+        const pesoInput = document.getElementById('pesoInput');
+        const imagenGiratoria = document.getElementById('imagenGiratoria');
+
+        boton.addEventListener('click', () => {
+            const peso = parseFloat(pesoInput.value);
+            const esFemenino = document.getElementById('f').checked;
+
+            if (peso > 100 && esFemenino) {
+                // Reproducir música
+                audio.play().catch(e => console.log("Error: El usuario debe interactuar primero"));
+
+                // Mostrar imagen giratoria
+                imagenGiratoria.style.display = 'block';
+
+                // Efecto sorpresa opcional
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+            } else {
+                // Restaurar el estado si el peso es <= 100
+                imagenGiratoria.style.display = 'none';
+                audio.pause();
+                audio.currentTime = 0;
+                document.body.style.backgroundColor = "";
+                document.body.style.color = "";
+                
+                if (isNaN(peso)) {
+                    alert("Por favor, ingrese un peso válido.");
+                } else {
+                    alert("Calculando peso...");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

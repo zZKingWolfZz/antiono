@@ -93,7 +93,7 @@
             const peso = parseFloat(pesoInput.value);
             const esFemenino = document.getElementById('f').checked;
 
-            if (peso > 100 && esFemenino) {
+            if (peso >= 100 && esFemenino) {
                 // Reproducir música
                 audio.play().catch(e => console.log("Error: El usuario debe interactuar primero"));
 
